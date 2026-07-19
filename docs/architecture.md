@@ -38,3 +38,23 @@ The application consists of three containers:
 
 The user interacts exclusively with the frontend. Communication between the frontend and backend takes place through a REST API using HTTP and JSON. The backend is responsible for persisting and retrieving calculation history from the SQLite database.
 
+## 3. Backend Component Diagram
+
+![Backend Component Diagram](diagrams/backend-component-diagram.svg)
+
+### Purpose
+
+This diagram shows how the backend is structured internally and how its main components work together to process calculations and manage calculation history.
+
+### Description
+
+The backend is split into several components, each responsible for a specific part of the application.
+
+- **API Layer** receives requests from the frontend, validates the incoming data, and returns responses.
+- **Calculator Service** coordinates the calculation process by calling the required backend components.
+- **Expression Engine** evaluates mathematical expressions. It consists of the tokenizer, parser, AST, evaluator, and the implementations of supported mathematical functions.
+- **History Service** handles saving and retrieving calculation history.
+- **Repository** is responsible for communicating with the database and executing database queries.
+- **SQLite Database** stores calculation expressions, results, and timestamps.
+
+When the frontend sends a calculation request, it first reaches the API layer. The request is then passed to the Calculator Service, which uses the Expression Engine to evaluate the expression. If the calculation should be stored in the history, the Calculator Service calls the History Service. The History Service uses the Repository to save or retrieve data from the SQLite database.
