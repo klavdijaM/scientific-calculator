@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from api.routes import router 
 
 app = FastAPI()
 
@@ -13,7 +14,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/hello")
-def hello():
-    return {"message": "Hello from FastAPI"} # returns a dictionary (fastAPI automatically converts it into JSON)
-
+app.include_router(router)
