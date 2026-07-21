@@ -58,3 +58,25 @@ The backend is split into several components, each responsible for a specific pa
 - **SQLite Database** stores calculation expressions, results, and timestamps.
 
 When the frontend sends a calculation request, it first reaches the API layer. The request is then passed to the Calculator Service, which uses the Expression Engine to evaluate the expression. If the calculation should be stored in the history, the Calculator Service calls the History Service. The History Service uses the Repository to save or retrieve data from the SQLite database.
+
+## 4. Frontend Component Diagram
+
+![Frontend Component Diagram](diagrams/frontend-component-diagram.svg)
+
+### Purpose
+
+This diagram shows how the frontend is structured internally and how its main components work together to provide the user interface and communicate with the backend.
+
+### Description
+
+The frontend is divided into several components, each with a specific responsibility.
+
+- **UI Layer** is responsible for starting the React application and rendering the calculator page. It consists of `main.tsx`, `App.tsx`, and `CalculatorPage.tsx`.
+- **Calculator Component** coordinates the calculator workflow and manages the application's state. It connects the user interface with the backend communication.
+- **Display Component** shows the current mathematical expression and the calculation result.
+- **Button Grid** captures user input by handling button presses and passing them to the Calculator Component.
+- **History Component** displays previously completed calculations.
+- **API Service** is responsible for communicating with the backend by sending HTTP requests and receiving responses.
+- **Shared Types** contains the shared TypeScript interfaces used throughout the frontend, such as the request and response models exchanged with the backend.
+
+When the application starts, the UI Layer renders the Calculator Component. The Calculator Component coordinates the interaction between the other frontend components. User input is received through the Button Grid, while the Display Component presents the current expression and calculation result. When a calculation needs to be performed, the Calculator Component uses the API Service to send a request to the backend. After receiving the result, it updates the Display Component and, if necessary, the History Component. The API Service uses the shared TypeScript interfaces defined in Shared Types to ensure that requests and responses follow a consistent structure.
