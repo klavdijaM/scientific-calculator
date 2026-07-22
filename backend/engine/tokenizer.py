@@ -18,6 +18,9 @@ class Tokenizer:
             if current_char.isspace():
                 self.position += 1
 
+            elif current_char.isdigit() or current_char == ".":
+                tokens.append(self._read_number())
+
             elif current_char == "+":
                 tokens.append(Token(TokenType.PLUS, "+"))
                 self.position += 1
@@ -52,4 +55,24 @@ class Tokenizer:
         tokens.append(Token(TokenType.EOF, ""))
 
         return tokens
+    
+    def _read_number(self) -> Token:
+        start = self.position
+        deicmal_found = False
+
+        while self.position < len(self.expression):
+            current_char = self.expression[self.position]
+
+            if current_char.isdigit():
+                self.position += 1 
+
+            elif current_char == "." and decimal_found == False:
+                decimal_found = True
+                self.position += 1
+            
+            else:
+                break
+        
+        number = self.expression[start:self.position]
+        return Token(TokenType.NUMBER, number)
 
