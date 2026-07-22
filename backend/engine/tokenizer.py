@@ -3,6 +3,20 @@ from engine.token_type import TokenType
 
 class Tokenizer:
 
+    FUNCTIONS = {
+        "sin",
+        "cos",
+        "tan",
+        "sqrt",
+        "log",
+        "ln",
+    }
+
+    CONSTANTS = {
+        "pi",
+        "e",
+    }
+
     def __init__(self):
         self.expression = ""
         self.position = 0
@@ -20,6 +34,9 @@ class Tokenizer:
 
             elif current_char.isdigit() or current_char == ".":
                 tokens.append(self._read_number())
+            
+            elif current_char.isalpha():
+                tokens.append(self._read_identifier())
 
             elif current_char == "+":
                 tokens.append(Token(TokenType.PLUS, "+"))
@@ -75,4 +92,31 @@ class Tokenizer:
         
         number = self.expression[start:self.position]
         return Token(TokenType.NUMBER, number)
+
+    
+    def _read_identifier(self) -> Token:
+        start = self.position 
+
+        while self.position < len(self.expression):
+            current_char = self.expression[self.position]
+
+            if current_char.isalpha():
+                self.position += 1 
+            else:
+                break
+        
+        identifier = self.expression[start:self.position]
+
+        if identifier in self.FUNCTIONS:
+            return Token(TokenType.FUNCTION, identifier)
+
+        elif identifier in self.CONSTANTS:
+            return Token(TokenType.CONSTANT, identifier)
+        
+        else: 
+            raise ValueError(f"Unknown identifier '{identifier}'")
+
+
+
+
 
