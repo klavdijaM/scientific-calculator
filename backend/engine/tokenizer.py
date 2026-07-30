@@ -75,7 +75,7 @@ class Tokenizer:
     
     def _read_number(self) -> Token:
         start = self.position
-        deicmal_found = False
+        decimal_found = False
 
         while self.position < len(self.expression):
             current_char = self.expression[self.position]
