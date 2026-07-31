@@ -1,6 +1,6 @@
-from engine.ast import ASTNode
 from engine.token import Token
 from engine.token_type import TokenType
+from engine.ast import ASTNode, NumberNode, ConstantNode
 
 class Parser:
 
@@ -34,8 +34,25 @@ class Parser:
         return token
     
     def _parse_expression(self) -> ASTNode:
-        raise NotImplementedError
-    
+        return self._parse_primary()
+
+    def _parse_primary(self) -> ASTNode:
+        token = self._current_token()
+
+        if token.token_type == TokenType.NUMBER:
+            self.position += 1
+            return NumberNode(token.value)
+        
+        if token.token_type == TokenType.CONSTANT:
+            self.position += 1
+            return ConstantNode(token.value)
+        
+        raise ValueError(f"Unexpected token '{token.value}'")
+
+
+
+
+
     
 
     
