@@ -10,6 +10,7 @@ class Parser:
         self.tokens: list[Token] = []
         self.position = 0
     
+
     def parse(self, tokens: list[Token]) -> ASTNode:
         self.tokens = tokens 
         self.position = 0
@@ -20,10 +21,12 @@ class Parser:
             raise ValueError(f"Unexpected token '{self._current_token().value}'")
         
         return ast
+
     
     def _current_token(self) -> Token:
         return self.tokens[self.position]
     
+
     def _match(self, expected: TokenType) -> Token:
         token = self._current_token()
 
@@ -32,15 +35,16 @@ class Parser:
         
         self.position += 1
         return token
+
     
     def _parse_expression(self) -> ASTNode: 
-        left = self._parse_primary()
+        left = self._parse_term()
 
         while self._current_token().token_type in (TokenType.PLUS, TokenType.MINUS):
             operator = self._current_token().token_type
             self.position += 1 
 
-            right = self._parse_primary()
+            right = self._parse_term()
 
             left = BinaryOperationNode(
                 operator = operator, 
@@ -48,6 +52,24 @@ class Parser:
                 right = right,
             )
         
+        return left 
+
+
+    def _parse_term(self) -> ASTNode: 
+        left = self._parse_primary()
+
+        while self._current_token().token_type in (TokenType.MULTIPLY, TokenType.DIVIDE):
+            operator = self._current_token().token_type
+            self.position += 1 
+
+            right = self._parse_primary()
+
+            left = BinaryOperationNode(
+                operator = operator,
+                left = left,
+                right = right,
+            )
+
         return left 
 
 
@@ -63,6 +85,10 @@ class Parser:
             return ConstantNode(token.value)
         
         raise ValueError(f"Unexpected token '{token.value}'")
+    
+
+
+
     
     
 
