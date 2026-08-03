@@ -1,6 +1,6 @@
 from engine.token import Token
 from engine.token_type import TokenType
-from engine.ast import ASTNode, NumberNode, ConstantNode
+from engine.ast import ASTNode, NumberNode, ConstantNode, BinaryOperationNode
 
 class Parser:
 
@@ -28,13 +28,28 @@ class Parser:
         token = self._current_token()
 
         if token.token_type != expected: 
-            raise ValueError(f"Expected {expected.name}, got {token.token_type.name} ")
+            raise ValueError(f"Expected {expected.name}, got {token.token_type.name}")
         
         self.position += 1
         return token
     
-    def _parse_expression(self) -> ASTNode:
-        return self._parse_primary()
+    def _parse_expression(self) -> ASTNode: 
+        left = self._parse_primary()
+
+        while self._current_token().token_type in (TokenType.PLUS, TokenType.MINUS):
+            operator = self._current_token().token_type
+            self.position += 1 
+
+            right = self._parse_primary()
+
+            left = BinaryOperationNode(
+                operator = operator, 
+                left = left,
+                right = right,
+            )
+        
+        return left 
+
 
     def _parse_primary(self) -> ASTNode:
         token = self._current_token()
@@ -48,6 +63,9 @@ class Parser:
             return ConstantNode(token.value)
         
         raise ValueError(f"Unexpected token '{token.value}'")
+    
+    
+
 
 
 
