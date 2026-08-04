@@ -1,6 +1,6 @@
 from engine.token import Token
 from engine.token_type import TokenType
-from engine.ast import ASTNode, NumberNode, ConstantNode, BinaryOperationNode, FunctionNode
+from engine.ast import ASTNode, NumberNode, ConstantNode, BinaryOperationNode, FunctionNode, UnaryOperationNode
 
 class Parser:
 
@@ -56,13 +56,13 @@ class Parser:
 
 
     def _parse_term(self) -> ASTNode: 
-        left = self._parse_primary()
+        left = self._parse_unary()
 
         while self._current_token().token_type in (TokenType.MULTIPLY, TokenType.DIVIDE):
             operator = self._current_token().token_type
             self.position += 1 
 
-            right = self._parse_primary()
+            right = self._parse_unary()
 
             left = BinaryOperationNode(
                 operator=operator,
@@ -107,3 +107,19 @@ class Parser:
             return expression
 
         raise ValueError(f"Unexpected token '{token.value}'")  
+    
+
+    def _parse_unary(self) -> ASTNode:
+        token = self._current_token()
+
+        if token.token_type == TokenType.MINUS:
+            self.position += 1 
+
+            operand = self._parse_unary()
+
+            return UnaryOperationNode(
+                operator=TokenType.MINUS,
+                operand=operand,
+            )
+        
+        return self._parse_primary()
