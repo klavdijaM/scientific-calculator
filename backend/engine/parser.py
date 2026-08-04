@@ -115,11 +115,30 @@ class Parser:
         if token.token_type == TokenType.MINUS:
             self.position += 1 
 
-            operand = self._parse_unary()
+            operand = self._parse_power()
 
             return UnaryOperationNode(
                 operator=TokenType.MINUS,
                 operand=operand,
             )
         
-        return self._parse_primary()
+        return self._parse_power()
+    
+
+    def _parse_power(self) -> ASTNode:
+        left = self._parse_primary()
+
+        if self._current_token().token_type == TokenType.POWER:
+            operator = self._current_token().token_type
+            self.position += 1
+
+            right = self._parse_power()
+
+            return BinaryOperationNode(
+                operator=operator,
+                left=left,
+                right=right,
+            )
+        
+        return left
+
