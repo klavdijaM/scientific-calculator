@@ -1,6 +1,6 @@
 from engine.token import Token
 from engine.token_type import TokenType
-from engine.ast import ASTNode, NumberNode, ConstantNode, BinaryOperationNode
+from engine.ast import ASTNode, NumberNode, ConstantNode, BinaryOperationNode, FunctionNode
 
 class Parser:
 
@@ -47,9 +47,9 @@ class Parser:
             right = self._parse_term()
 
             left = BinaryOperationNode(
-                operator = operator, 
-                left = left,
-                right = right,
+                operator=operator, 
+                left=left,
+                right=right,
             )
         
         return left 
@@ -65,9 +65,9 @@ class Parser:
             right = self._parse_primary()
 
             left = BinaryOperationNode(
-                operator = operator,
-                left = left,
-                right = right,
+                operator=operator,
+                left=left,
+                right=right,
             )
 
         return left 
@@ -84,6 +84,20 @@ class Parser:
             self.position += 1
             return ConstantNode(token.value)
         
+        if token.token_type == TokenType.FUNCTION: 
+            self.position += 1
+
+            self._match(TokenType.LEFT_PAREN)
+
+            argument = self._parse_expression()
+
+            self._match(TokenType.RIGHT_PAREN)
+
+            return FunctionNode(
+                name=token.value,
+                argument=argument,
+            )
+
         if token.token_type == TokenType.LEFT_PAREN:
             self.position += 1
             
@@ -92,22 +106,4 @@ class Parser:
         
             return expression
 
-        raise ValueError(f"Unexpected token '{token.value}'")
-    
-
-    
-    
-
-
-
-    
-    
-
-
-
-
-
-
-    
-
-    
+        raise ValueError(f"Unexpected token '{token.value}'")  
