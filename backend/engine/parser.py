@@ -84,7 +84,18 @@ class Parser:
             self.position += 1
             return ConstantNode(token.value)
         
+        if token.token_type == TokenType.LEFT_PAREN:
+            self.position += 1
+            
+            expression = self._parse_expression()
+            self._match(TokenType.RIGHT_PAREN)
+        
+            return expression
+
         raise ValueError(f"Unexpected token '{token.value}'")
+    
+
+    
     
 
 
