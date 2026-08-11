@@ -3,5 +3,5 @@ from engine.token_type import TokenType
 
 @dataclass
 class Token:
-    type: TokenType
+    token_type: TokenType
     value: str
