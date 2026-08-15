@@ -129,6 +129,21 @@ def test_parse_power():
     assert ast.right.right.value == "3"
 
 
+def test_invalid_expression():
+    tokenizer = Tokenizer()
+    parser = Parser()
+
+    with pytest.raises(ValueError):
+        parser.parse(tokenizer.tokenize("2+"))
+
+
+def test_unexpected_token():
+    tokenizer = Tokenizer()
+    parser = Parser()
+
+    with pytest.raises(ValueError):
+        parser.parse(tokenizer.tokenize(")"))
+
 
 
 
