@@ -1,4 +1,4 @@
-from dataclass import dataclass
+from dataclasses import dataclass
 from engine.token_type import TokenType
 
 class ASTNode:
@@ -11,7 +11,7 @@ class NumberNode(ASTNode):
 
 @dataclass
 class ConstantNode(ASTNode):
-    name: str
+    value: str
 
 @dataclass
 class UnaryOperationNode(ASTNode):

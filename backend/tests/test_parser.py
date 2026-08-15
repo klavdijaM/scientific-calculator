@@ -22,8 +22,8 @@ def test_parse_number():
 
 
 def test_parse_constant():
-    tokenizer = tokenizer()
-    parser = parser()
+    tokenizer = Tokenizer()
+    parser = Parser()
 
     ast = parser.parse(tokenizer.tokenize("pi"))
 
@@ -32,8 +32,8 @@ def test_parse_constant():
 
 
 def test_parse_function():
-    tokenizer = tokenizer()
-    parser = parser()
+    tokenizer = Tokenizer()
+    parser = Parser()
 
     ast = parser.parse(tokenizer.tokenize("sqrt(9)"))
 
