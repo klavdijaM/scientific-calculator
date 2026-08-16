@@ -32,8 +32,8 @@ class Evaluator:
                 return -operand
 
         elif isinstance(node, BinaryOperationNode):
-            left = self.evaluate(node.left)
-            right = self.evaluate(node.right)
+            left = self.evaluate(node.left) 
+            right = self.evaluate(node.right) 
 
             if node.operator == TokenType.PLUS:
                 return left + right
