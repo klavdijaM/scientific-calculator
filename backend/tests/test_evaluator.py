@@ -7,6 +7,7 @@ from engine.ast import (
     ConstantNode, 
     UnaryOperationNode, 
     BinaryOperationNode,
+    FunctionNode
 )
 
 def test_evaluate_number():
@@ -104,6 +105,56 @@ def test_evaluate_power():
     assert evaluator.evaluate(node) == 16.0
 
 
+def test_evaluate_func_sqrt():
+    evaluator = Evaluator()
+
+    node = FunctionNode(
+        name = "sqrt",
+        argument = NumberNode("9")
+    )
+
+    assert evaluator.evaluate(node) == 3.0
 
 
-    
+def test_evaluate_func_sin():
+    evaluator = Evaluator()
+
+    node = FunctionNode(
+        name = "sin",
+        argument = NumberNode("0")
+    )
+
+    assert evaluator.evaluate(node) == 0.0
+
+
+def test_evaluate_func_cos():
+    evaluator = Evaluator()
+
+    node = FunctionNode(
+        name = "cos",
+        argument = NumberNode("0")
+    )
+
+    assert evaluator.evaluate(node) == 1.0
+
+
+def test_evaluate_func_log():
+    evaluator = Evaluator()
+
+    node = FunctionNode(
+        name = "log",
+        argument = NumberNode("100")
+    )
+
+    assert evaluator.evaluate(node) == 2.0
+
+
+def test_evaluate_func_ln():
+    evaluator = Evaluator()
+
+    node = FunctionNode(
+        name = "ln",
+        argument = NumberNode(str(math.e))
+    )
+
+    assert evaluator.evaluate(node) == 1.0
