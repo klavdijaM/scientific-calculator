@@ -143,21 +143,3 @@ def test_unexpected_token():
 
     with pytest.raises(ValueError):
         parser.parse(tokenizer.tokenize(")"))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-    
