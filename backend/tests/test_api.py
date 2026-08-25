@@ -49,4 +49,4 @@ def test_invalid_expression():
         json={"expression": "2+"},
     )
 
-    assert response.status_code == 500
+    assert response.status_code == 400
