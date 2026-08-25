@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi import HTTPException
 
 from api.schemas import CalculationRequest, CalculationResponse
 from engine.parser import Parser
@@ -18,8 +19,13 @@ def calculate(request: CalculationRequest) -> CalculationResponse:
     parser = Parser()
     evaluator = Evaluator()
 
-    tokens = tokenizer.tokenize(request.expression)
-    ast = parser.parse(tokens)
-    result = evaluator.evaluate(ast)
+    try:
 
-    return CalculationResponse(result=result)
+        tokens = tokenizer.tokenize(request.expression)
+        ast = parser.parse(tokens)
+        result = evaluator.evaluate(ast)
+
+        return CalculationResponse(result=result)
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
