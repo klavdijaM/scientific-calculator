@@ -74,3 +74,15 @@ def test_whitespace_expression():
     assert response.json() == {
         "detail": "Expression cannot be empty."
     }
+
+
+def test_division_by_zero():
+    response = client.post(
+        "/calculate",
+        json={"expression": "2/0"}
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "Division by zero is not allowed."
+    }

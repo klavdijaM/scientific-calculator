@@ -34,3 +34,6 @@ def calculate(request: CalculationRequest) -> CalculationResponse:
 
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+    except ZeroDivisionError:
+        raise HTTPException(status_code=400, detail="Division by zero is not allowed.")
