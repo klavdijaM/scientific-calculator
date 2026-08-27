@@ -20,6 +20,11 @@ def calculate(request: CalculationRequest) -> CalculationResponse:
     evaluator = Evaluator()
 
     try:
+        if request.expression.strip() == "":
+            raise HTTPException(
+                status_code=400,
+                detail="Expression cannot be empty"
+            )
 
         tokens = tokenizer.tokenize(request.expression)
         ast = parser.parse(tokens)

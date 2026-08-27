@@ -50,3 +50,27 @@ def test_invalid_expression():
     )
 
     assert response.status_code == 400
+
+
+def test_empty_expression():
+    response = client.post(
+        "/calculate", 
+        json={"expression": ""}
+    )
+
+    assert response.status == 400
+    assert response.json() == {
+        "detail": "Expression cannot be empty."
+    }
+
+
+def test_whitespace_expression():
+    response = client.post(
+        "/calculate", 
+        json={"expression": "   "}
+    )
+
+    assert response.status == 400
+    assert response.json() == {
+        "detail": "Expression cannot be empty."
+    }
