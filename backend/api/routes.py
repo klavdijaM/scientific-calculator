@@ -23,7 +23,7 @@ def calculate(request: CalculationRequest) -> CalculationResponse:
         if request.expression.strip() == "":
             raise HTTPException(
                 status_code=400,
-                detail="Expression cannot be empty"
+                detail="Expression cannot be empty."
             )
 
         tokens = tokenizer.tokenize(request.expression)

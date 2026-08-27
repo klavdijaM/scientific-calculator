@@ -58,7 +58,7 @@ def test_empty_expression():
         json={"expression": ""}
     )
 
-    assert response.status == 400
+    assert response.status_code == 400
     assert response.json() == {
         "detail": "Expression cannot be empty."
     }
@@ -70,7 +70,7 @@ def test_whitespace_expression():
         json={"expression": "   "}
     )
 
-    assert response.status == 400
+    assert response.status_code == 400
     assert response.json() == {
         "detail": "Expression cannot be empty."
     }
