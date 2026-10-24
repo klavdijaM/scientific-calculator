@@ -2,15 +2,42 @@ import {useState} from "react";
 
 function App() {
     const [expression, setExpression] = useState("");
+    const [error, setError] = useState("");
 
     function handleButtonClick(value: string) {
-        setExpression(expression + value)
+        setExpression(expression + value);
+        setError("");
     }
 
     function handleClear() {
-        setExpression("")
+        setExpression("");
+        setError("");
     }
 
+    async function handleCalculate(){
+        try{
+            setError("");
+
+            const response = await fetch("http://localhost:8000/calculate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({expression: expression})
+            });
+
+            if(!response.ok){
+                throw new Error("Calculation failed");
+            }
+
+            const data = await response.json();
+            setExpression(String(data.result));
+        
+        } catch {
+            setError("Invalid expression");
+
+        }
+    }
 
     return (
         <div>
@@ -18,6 +45,7 @@ function App() {
             <div className="calculator-display">
                 {expression || "0" }
             </div>
+            {error && <p>{error}</p>}
             <div className="calculator-buttons">
                 <button onClick={() => handleButtonClick("7")}>7</button>
                 <button onClick={() => handleButtonClick("8")}>8</button>
@@ -40,6 +68,7 @@ function App() {
                 <button onClick={() => handleButtonClick(")")}>)</button>
                 <button onClick={() => handleButtonClick("+")}>+</button>
                 <button onClick={handleClear}>C</button>
+                <button onClick={handleCalculate}>=</button>
             </div>
         </div>
 
