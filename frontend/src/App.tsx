@@ -14,6 +14,11 @@ function App() {
         setError("");
     }
 
+    function handleBackspace() {
+        setExpression(expression.slice(0, -1))
+        setError("")
+    }
+
     async function handleCalculate(){
         try{
             setError("");
@@ -42,10 +47,13 @@ function App() {
     return (
         <div>
             <h1>Scientific Calculator</h1>
+
             <div className="calculator-display">
                 {expression || "0" }
             </div>
+
             {error && <p>{error}</p>}
+
             <div className="calculator-buttons">
                 <button onClick={() => handleButtonClick("7")}>7</button>
                 <button onClick={() => handleButtonClick("8")}>8</button>
@@ -67,8 +75,11 @@ function App() {
                 <button onClick={() => handleButtonClick("(")}>(</button>
                 <button onClick={() => handleButtonClick(")")}>)</button>
                 <button onClick={() => handleButtonClick("+")}>+</button>
+
                 <button onClick={handleClear}>C</button>
+                <button onClick={handleBackspace}>⌫</button>
                 <button onClick={handleCalculate}>=</button>
+            
             </div>
         </div>
 
