@@ -1,11 +1,11 @@
-import {useState} from "react";
+import { useEffect, useState } from "react";
 
 function App() {
     const [expression, setExpression] = useState("");
     const [error, setError] = useState("");
 
     function handleButtonClick(value: string) {
-        setExpression(expression + value);
+        setExpression(oldExpression => oldExpression + value);
         setError("");
     }
 
@@ -15,12 +15,36 @@ function App() {
     }
 
     function handleBackspace() {
-        setExpression(expression.slice(0, -1))
-        setError("")
+        setExpression(oldExpression => oldExpression.slice(0, -1));
+        setError("");
     }
 
-    async function handleCalculate(){
-        try{
+    useEffect(() => {
+        function handleKeyDown(event: KeyboardEvent) {
+            const key = event.key;
+
+            if ("0123456789+-*/.()".includes(key) && key.length == 1) {
+                handleButtonClick(key);
+            } else if (key == "Backspace") {
+                event.preventDefault();
+                handleBackspace();
+            } else if (key == "Escape") {
+                event.preventDefault();
+                handleClear();
+            } else if (key == "Enter") {
+                event.preventDefault();
+                handleCalculate();
+            }
+        }
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+
+    }, [expression]);
+
+    async function handleCalculate() {
+        try {
             setError("");
 
             const response = await fetch("http://localhost:8000/calculate", {
@@ -28,16 +52,16 @@ function App() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({expression: expression})
+                body: JSON.stringify({ expression: expression })
             });
 
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error("Calculation failed");
             }
 
             const data = await response.json();
             setExpression(String(data.result));
-        
+
         } catch {
             setError("Invalid expression");
 
@@ -49,7 +73,7 @@ function App() {
             <h1>Scientific Calculator</h1>
 
             <div className="calculator-display">
-                {expression || "0" }
+                {expression || "0"}
             </div>
 
             {error && <p>{error}</p>}
@@ -79,7 +103,7 @@ function App() {
                 <button onClick={handleClear}>C</button>
                 <button onClick={handleBackspace}>⌫</button>
                 <button onClick={handleCalculate}>=</button>
-            
+
             </div>
         </div>
 
