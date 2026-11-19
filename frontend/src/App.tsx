@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useEffectEvent } from "react";
 
 function App() {
     const [expression, setExpression] = useState("");
@@ -19,9 +19,8 @@ function App() {
         setError("");
     }
 
-    useEffect(() => {
-        function handleKeyDown(event: KeyboardEvent) {
-            const key = event.key;
+    const onKeyDown = useEffectEvent((event: KeyboardEvent) => {
+        const key = event.key;
 
             if ("0123456789+-*/.()".includes(key) && key.length == 1) {
                 handleButtonClick(key);
@@ -35,13 +34,20 @@ function App() {
                 event.preventDefault();
                 handleCalculate();
             }
+    });
+
+    useEffect(() => {
+        function handleKeyDown(event: KeyboardEvent) {
+            onKeyDown(event);
         }
+
         window.addEventListener("keydown", handleKeyDown);
+
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
         };
 
-    }, [expression]);
+    }, []);
 
     async function handleCalculate() {
         try {
