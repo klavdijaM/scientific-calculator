@@ -61,15 +61,31 @@ function App() {
                 body: JSON.stringify({ expression: expression })
             });
 
+            if (response.status == 400) {
+                setError("Invalid Expression");
+                return;
+            }
+
+            if (response.status == 422) {
+                setError("Invalid request data");
+                return;
+            }
+
+            if (response.status == 500) {
+                setError("Internal server error");
+                return;
+            }
+
             if (!response.ok) {
-                throw new Error("Calculation failed");
+                setError("Calculation failed. Please try again.");
+                return;
             }
 
             const data = await response.json();
             setExpression(String(data.result));
 
         } catch {
-            setError("Invalid expression");
+            setError("Cannot connect to calculator server.");
 
         }
     }
