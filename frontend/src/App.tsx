@@ -1,8 +1,11 @@
-import { useEffect, useState, useEffectEvent } from "react";
+import { useEffect, useState, useEffectEvent, useRef } from "react";
 
 function App() {
     const [expression, setExpression] = useState("");
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [showLoading, setShowLoading] = useState(false);
+    const isCalculatingRef = useRef(false);
 
     function handleButtonClick(value: string) {
         setExpression(oldExpression => oldExpression + value);
@@ -50,6 +53,18 @@ function App() {
     }, []);
 
     async function handleCalculate() {
+        if (isCalculatingRef.current) {
+            return;
+        }
+
+        isCalculatingRef.current = true;
+        setIsLoading(true);
+        setShowLoading(false);
+
+        const loadingTimer = setTimeout(() => {
+            setShowLoading(true);
+        }, 500);
+
         try {
             setError("");
 
@@ -87,7 +102,13 @@ function App() {
         } catch {
             setError("Cannot connect to calculator server.");
 
+        } finally {
+            clearTimeout(loadingTimer);
+            setIsLoading(false);
+            setShowLoading(false);
+            isCalculatingRef.current = false;
         }
+
     }
 
     return (
@@ -98,6 +119,7 @@ function App() {
                 {expression || "0"}
             </div>
 
+            {showLoading && <p>Calculating...</p>}
             {error && <p>{error}</p>}
 
             <div className="calculator-buttons">
@@ -124,7 +146,7 @@ function App() {
 
                 <button onClick={handleClear}>C</button>
                 <button onClick={handleBackspace}>⌫</button>
-                <button onClick={handleCalculate}>=</button>
+                <button onClick={handleCalculate} disabled={isLoading}>=</button>
 
             </div>
         </div>
