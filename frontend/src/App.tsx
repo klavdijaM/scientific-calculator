@@ -8,16 +8,28 @@ function App() {
     const isCalculatingRef = useRef(false);
 
     function handleButtonClick(value: string) {
+        if (isCalculatingRef.current) {
+            return;
+        }
+
         setExpression(oldExpression => oldExpression + value);
         setError("");
     }
 
     function handleClear() {
+        if(isCalculatingRef.current){
+            return;
+        }
+
         setExpression("");
         setError("");
     }
 
     function handleBackspace() {
+        if (isCalculatingRef.current){
+            return;
+        }
+        
         setExpression(oldExpression => oldExpression.slice(0, -1));
         setError("");
     }
