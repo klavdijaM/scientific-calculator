@@ -29,7 +29,7 @@ function App() {
         if (isCalculatingRef.current){
             return;
         }
-        
+
         setExpression(oldExpression => oldExpression.slice(0, -1));
         setError("");
     }
@@ -37,7 +37,7 @@ function App() {
     const onKeyDown = useEffectEvent((event: KeyboardEvent) => {
         const key = event.key;
 
-            if ("0123456789+-*/.()".includes(key) && key.length == 1) {
+            if ("0123456789+-*/.()^".includes(key) && key.length == 1) {
                 handleButtonClick(key);
             } else if (key == "Backspace") {
                 event.preventDefault();
@@ -155,6 +155,8 @@ function App() {
                 <button onClick={() => handleButtonClick("(")}>(</button>
                 <button onClick={() => handleButtonClick(")")}>)</button>
                 <button onClick={() => handleButtonClick("+")}>+</button>
+                <button onClick={() => handleButtonClick("^")}>xʸ</button>
+                <button onClick={() => handleButtonClick("sqrt(")}>√x</button>
 
                 <button onClick={handleClear}>C</button>
                 <button onClick={handleBackspace}>⌫</button>

@@ -132,7 +132,7 @@ class Parser:
             operator = self._current_token().token_type
             self.position += 1
 
-            right = self._parse_power()
+            right = self._parse_unary()
 
             return BinaryOperationNode(
                 operator=operator,
