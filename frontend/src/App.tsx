@@ -156,7 +156,18 @@ function App() {
                 <button onClick={() => handleButtonClick(")")}>)</button>
                 <button onClick={() => handleButtonClick("+")}>+</button>
                 <button onClick={() => handleButtonClick("^")}>xʸ</button>
+
                 <button onClick={() => handleButtonClick("sqrt(")}>√x</button>
+                
+                <button onClick={() => handleButtonClick("sin(")}>sin</button>
+                <button onClick={() => handleButtonClick("cos(")}>cos</button>
+                <button onClick={() => handleButtonClick("tan(")}>tan</button>
+
+                <button onClick={() => handleButtonClick("log(")}>log</button>
+                <button onClick={() => handleButtonClick("ln(")}>ln</button>
+
+                <button onClick={() => handleButtonClick("pi")}>π</button>
+                <button onClick={() => handleButtonClick("e")}>e</button>
 
                 <button onClick={handleClear}>C</button>
                 <button onClick={handleBackspace}>⌫</button>

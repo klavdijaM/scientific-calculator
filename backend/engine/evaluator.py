@@ -68,6 +68,9 @@ class Evaluator:
             elif node.name == "ln":
                 return math.log(argument)
 
+            elif node.name == "tan":
+                return math.tan(argument)
+
             raise ValueError(f"Unknown function '{node.name}'")
 
         raise ValueError(f"Unsupported node type: {type(node).__name__}")
